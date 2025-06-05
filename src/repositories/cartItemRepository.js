@@ -1,20 +1,42 @@
-async function inserirItensRepository(params) {
-    
-    client.query(
-    `INSERT INTO cart_item (cart_id, product_id, quantity)
-             VALUES ($1, $2, $3)`,
-    [cart_id, product_id, quantity]
-  )
+const prisma = require("../config/prisma.js");
+
+async function inserirItensRepository(cart_id, product_id, quantity) {
+  return await prisma.cartItem.create({
+    data: {cart_id, product_id, quantity },
+  });
 }
 
-async function alterarItensRepository(params) {
-    client.query(
-        'UPDATE cart_item SET quantity = $1 WHERE id = $2 RETURNING *',
-        [quantity, id]
-    )
+async function alterarItensRepository(id, quantity) {
+  try {
+    const item = await prisma.cartItem.update({
+      where: { id: Number(id) },
+      data: { quantity },
+    });
+    return item;
+  } catch (error) {
+    if (error.code === "P2025") {
+      return null;
+    }
+    throw error;
+  }
 }
 
-
-async function deletarItensRepository(params) {
-    await client.query("DELETE FROM cart_item WHERE cart_id = $1", [id]);
+async function deletarItensRepository(id) {
+  try {
+    const item = await prisma.cartItem.delete({
+      where: { id: Number(id) },
+    });
+    return item;
+  } catch (error) {
+    if (error.code === "P2025") {
+      return null;
+    }
+    throw error;
+  }
 }
+
+module.exports = {
+  inserirItensRepository,
+  alterarItensRepository,
+  deletarItensRepository,
+};

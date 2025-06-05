@@ -1,5 +1,5 @@
-const { Result } = require("pg");
 const { cartCheck } = require("../repositories/cartRepository");
+const { inserirItensRepository, alterarItensRepository, deletarItensRepository } = require('../repositories/cartItemRepository')
 
 async function inserirItensService(cart_id, product_id, quantity) {
   const carrinhoCheck = await cartCheck(cart_id);

@@ -1,6 +1,6 @@
 const  {inserirItensService, alterarItensService, deletarItensService} = require('../services/cartItemServices')
 
-async function inserirItens() {
+async function inserirItens(req, res) {
     const {cart_id, product_id, quantity} = req.body
     try {
         const result = await inserirItensService(cart_id, product_id, quantity)
@@ -14,7 +14,7 @@ async function inserirItens() {
     }
    
 }
-async function alterarItens() {
+async function alterarItens(req, res) {
     const {id} = req.params
     const {quantity} = req.body
     try {
@@ -28,7 +28,7 @@ async function alterarItens() {
         })
     }
 }
-async function deletarItens() {
+async function deletarItens(req, res) {
     const {id} = req.params
     try {
         const result = await deletarItensService(id)
