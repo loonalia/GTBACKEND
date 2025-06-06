@@ -1,25 +1,35 @@
-const prisma = require('../config/prisma.js')
 
-async function cartCheck(cart_id) {
-    return await prisma.cart.findUnique({
+const prisma = require("../config/prisma")
+
+
+function cartCheck(cart_id) {
+    return prisma.cart.findUnique({
         where: {id: cart_id},
         select: {id: true}
     })
-  client.query("SELECT id FROM cart WHERE id = $1", [cart_id]);
 }
 
-async function listarItensRepository(params) {
-  client.query("SELECT * FROM cart_item WHERE cart_id = $1", [id]);
+function listarCarrinhoItensRepository(cart_id) {
+    return prisma.cartItem.findMany({
+            where: {id: Number(cart_id)}
+    })
 }
 
-async function criarCarrinhoRepository(user_id) {
-    return await prisma.cart.create({
+function criarCarrinhoRepository(user_id) {
+    return prisma.cart.create({
         data: {user_id}
     })
 }
 
+ function limparCarrinhoRepository(cart_id) {
+    return prisma.cartItem.delete({
+        where: {id: Number(cart_id)}
+    })
+}
+
 module.exports = {
-  cartCheck,
-  listarItensRepository,
-  criarCarrinhoRepository,
-};
+    cartCheck,
+    listarCarrinhoItensRepository,
+    criarCarrinhoRepository,
+    limparCarrinhoRepository
+}
