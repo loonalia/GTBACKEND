@@ -3,15 +3,16 @@ const { inserirItens, alterarItens, deletarItens} = require('../controllers/cart
 const authMiddleware =  require('../middleware/authMiddleware.js')
 
 
+router.post('/', authMiddleware,
+    // #swagger.summary = 'Inserir itens no carrinho'
+    inserirItens)
 
- //insere itens no carrinho
-router.post('/', authMiddleware, inserirItens)
+router.put('/:id',
+    //swagger.summary = 'Alterar quantidade de itens no carrinho'
+    alterarItens) 
 
- //Alterar a quantidade item carrinho
-router.put('/:id', alterarItens) 
-
-//deleta item
-router.delete('/:id', deletarItens) 
-
+router.delete('/:id',
+    // #swagger.summary = 'Deletar itens do carrinho'
+    deletarItens) 
 
 module.exports = router
